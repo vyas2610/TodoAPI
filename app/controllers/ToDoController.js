@@ -1,17 +1,41 @@
+const { PrismaClient } = require("@prisma/client")
+const prisma = new PrismaClient()
+
+BigInt.prototype.toJSON = function () {
+    const int = Number.parseInt(this.toString());
+    return int ?? this.toString();
+};
+
 //index function for get data 
 
-function index(req, res) {
-    res.send({
-        msg: 'TodoController for Get Data'
-    })
+async function index(req, res) {
+    try {
+        let response = await prisma.tasks.findMany()
+
+        res.send({
+            response
+        })
+    } catch (error) {
+        res.status(500).send({
+            error
+        })
+    }
 }
 
 // create function for add data 
-function create(req, res) {
+async function create(req, res) {
     try {
+        let body = req.body;
+        await prisma.tasks.create({
+            data: {
+
+                "task_name": body.task_name,
+                "task_desc": body.task_desc,
+            }
+
+        })
         res.send({
-            msg: 'TodoController for Add Data',
-            body: req.body
+            msg: 'Data Added Successfully...!',
         })
 
     } catch (error) {
@@ -22,22 +46,58 @@ function create(req, res) {
 }
 
 // update function...!
-function update(req, res) {
-    res.send({
-        msg: "Update is Calling...!",
-    })
+async function update(req, res) {
+    try {
+        await prisma.tasks.update({
+            data: req.body,
+            where: {
+                id: req.params.id
+            }
+        })
+        res.send({
+            msg: "Update is Calling...!",
+        })
+
+    } catch (error) {
+        res.status(500).send({
+            error
+        })
+    }
 }
 
-function destory(req, res) {
-    res.send({
-        msg: "Delete is calling..!"
-    })
+async function destory(req, res) {
+    try {
+        await prisma.tasks.delete({
+            where: {
+                id: req.params.id
+            }
+        })
+        res.send({
+            msg: "Delete is calling..!"
+        })
+
+    } catch (error) {
+        res.status(500).send({
+            error
+        })
+    }
 
 }
-function details(req, res) {
-    res.send({
-        msg: "Details is calling...!"
-    })
+async function details(req, res) {
+    try {
+        let response = await prisma.tasks.findFirst({
+            where: {
+                id: req.params.id
+            }
+        })
+        res.send({
+            response
+        })
+    } catch (error) {
+        res.status(500).send({
+            error
+        })
+    }
 }
 module.exports = {
     index,
