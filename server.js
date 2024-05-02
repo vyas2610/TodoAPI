@@ -7,5 +7,5 @@ const routes = require('./utils/routes')
 routes(app);
 
 app.listen(port, function () {
-    console.log("Server Started...! Successfully...!")
+    console.log(`Server Started...! Successfully...! @ http://localhost:${port}`)
 });
