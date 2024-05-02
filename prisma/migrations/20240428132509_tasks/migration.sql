@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE `tasks` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `task_name` LONGTEXT NOT NULL,
+    `task_desc` LONGTEXT NULL,
+    `create_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `update_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
